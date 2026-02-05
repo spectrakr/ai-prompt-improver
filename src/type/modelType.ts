@@ -1,0 +1,1 @@
+export type ModelNameType = "gemini" | "openAi" | "claude" | "";

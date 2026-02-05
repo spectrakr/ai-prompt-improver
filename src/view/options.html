@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prompttier 설정</title>
+    <link rel="stylesheet" href="../css/options.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Prompttier 설정</h1>
+        <div class="subtitle">프롬프트 개선 도구의 설정을 관리합니다</div>
+
+        <div class="section">
+            <h2>기본 설정</h2>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="improverEnabled">
+                <label for="improverEnabled">프롬프트 자동 개선 활성화</label>
+            </div>
+
+            <div class="setting-group">
+                <label for="improveGuide">프롬프트 개선 가이드</label>
+                <textarea id="improveGuide" placeholder="프롬프트 개선 시 적용할 가이드라인을 입력하세요. (선택사항)"></textarea>
+                <div class="help-text">
+                    프롬프트 개선 시 참고할 가이드라인을 설정할 수 있습니다. 예: "간결하고 명확하게", "전문적인 톤 유지" 등
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>모델 설정</h2>
+
+            <div class="setting-group">
+                <label for="selectedModel">사용할 AI 모델</label>
+                <select id="selectedModel">
+                    <option value="">선택하지 않음</option>
+                    <option value="gemini">Google Gemini</option>
+                    <option value="openAi">OpenAI GPT</option>
+                    <option value="claude">Anthropic Claude</option>
+                </select>
+                <div class="help-text">
+                    프롬프트 개선에 사용할 AI 모델을 선택하세요. 선택한 모델의 API 키가 필요합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>API 키 설정</h2>
+            <div class="info-box" id="apiKeyInfo">
+                프롬프트 개선을 위해서는 최소 하나의 AI 모델 API 키가 필요합니다.
+            </div>
+
+            <div class="api-keys-grid">
+                <div class="setting-group">
+                    <label for="geminiApiKey">Gemini API 키</label>
+                    <input type="password" id="geminiApiKey" placeholder="AIza...">
+                    <div class="help-text">
+                        <a href="https://makersuite.google.com/app/apikey" target="_blank">Gemini API 키 발급받기</a>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="openAiApiKey">OpenAI API 키</label>
+                    <input type="password" id="openAiApiKey" placeholder="sk-...">
+                    <div class="help-text">
+                        <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API 키 발급받기</a>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="claudeApiKey">Claude API 키</label>
+                    <input type="password" id="claudeApiKey" placeholder="sk-ant-...">
+                    <div class="help-text">
+                        <a href="https://console.anthropic.com/" target="_blank">Claude API 키 발급받기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>고급 설정</h2>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <label for="temperature">Temperature</label>
+                    <span class="slider-value" id="temperatureValue">0.0</span>
+                </div>
+                <input type="range" id="temperature" min="0" max="2" step="0.1" value="0">
+                <div class="help-text">
+                    응답의 창의성을 조절합니다. 낮을수록 일관적이고 예측 가능하며, 높을수록 창의적이고 다양합니다. (0.0 ~ 2.0)
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <label for="topP">Top P</label>
+                    <span class="slider-value" id="topPValue">1.0</span>
+                </div>
+                <input type="range" id="topP" min="0" max="1" step="0.05" value="1">
+                <div class="help-text">
+                    다양성 제어 파라미터입니다. 낮을수록 더 집중된 응답을 생성합니다. (0.0 ~ 1.0)
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label for="maxOutputTokens">최대 출력 토큰</label>
+                <input type="number" id="maxOutputTokens" min="1" max="8192" value="1024">
+                <div class="help-text">
+                    생성되는 응답의 최대 길이를 토큰 단위로 제한합니다. (1 ~ 8192)
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="secondary-button" id="reset">기본값으로 초기화</button>
+            <button type="button" class="primary-button" id="save">저장</button>
+        </div>
+
+        <div id="status"></div>
+    </div>
+
+    <script src="../options.js"></script>
+</body>
+</html>

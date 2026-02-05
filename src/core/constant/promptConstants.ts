@@ -18,12 +18,11 @@ export const persona = `
    - 예: "당신은 10년 차 시니어 개발자입니다.", "당신은 논리적인 테크니컬 라이터입니다."
 
 2. **구조화 (Structuring)**
-   - 줄글 형태의 원본을 다음의 마크다운 헤더 구조로 재구성하십시오:
+   - 줄글 형태의 원본을 다음의 마크다운 헤더 구조로 재구성하십시오. 단, 필요하지 않는 헤더일 경우 포함하지 않습니다.:
      - ### 역할 (Role)
      - ### 작업 및 목표 (Task & Goal)
      - ### 컨텍스트 및 데이터 (Context & Data)
      - ### 제약 조건 및 규칙 (Constraints & Rules)
-     - ### 출력 형식 (Output Format)
 
 3. **명확성 강화 (Clarification)**
    - '대충', '잘', '적당히', '좀'과 같은 모호한 부사를 제거하십시오.
@@ -34,19 +33,15 @@ export const persona = `
    - 불가피한 경우 '제외 목록'이나 '주의 사항' 섹션으로 분리하십시오.
 
 5. **코드 보존 원칙 (Code Preservation)**
-   - 'improveGuide' 에 따라, [Original Prompt] 내에 포함된 소스 코드, 로그 데이터, 혹은 고유명사는 절대 수정하거나 요약하지 말고 [Improved Prompt]의 데이터 섹션에 원본 그대로 포함시켜야 합니다.
+   - [Original Prompt] 내에 포함된 소스 코드, 로그 데이터, 혹은 고유명사는 절대 수정하거나 요약하지 말고 [Improved Prompt]의 데이터 섹션에 원본 그대로 포함시켜야 합니다.
 `;
 
 export const responseGuide = `
 반드시 다음 JSON 형식으로만 응답하세요:
 {
-  "score": 1-10,
+  "score": 1-100,
   "issues": ["문제점1", "문제점2"],
   "improved": "개선된 프롬프트 전문",
   "improvements": ["개선사항1", "개선사항2"]
 }
-`;
-
-export const defaultGuidePrompt = `
-추가적인 가이드라인은 없습니다.
 `;

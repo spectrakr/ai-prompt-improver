@@ -25,6 +25,19 @@
 }
 
 /* 로딩 스타일 */
+#prompttier-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
 .improver-loading {
     position: fixed;
     top: 0;
@@ -61,6 +74,18 @@
 }
 
 /* 다이얼로그 스타일 */
+#improvement-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .improvement-dialog {
     position: fixed;
     top: 0;
@@ -195,8 +220,19 @@
     color: #202124;
     line-height: 1.6;
     white-space: pre-wrap;
-    width: 90%;
-    resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.improved-text.editable {
+    border: 2px solid #1a73e8;
+    outline: none;
+    background: white;
+    cursor: text;
+}
+
+.improved-text.editable:focus {
+    border-color: #1557b0;
 }
 
 textarea.improved-text {
