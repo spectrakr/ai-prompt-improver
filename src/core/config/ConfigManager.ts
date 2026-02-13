@@ -7,6 +7,7 @@ export class ConfigManager {
 
     private commonConfig: CommonConfig | null = null;
     private modelConfig: ModelConfig | null = null;
+    private slackWebhookUrl: string = "";
     private initialized: boolean = false;
 
     private constructor() {
@@ -31,6 +32,7 @@ export class ConfigManager {
 
             this.commonConfig = CommonConfig.from(configStorage);
             this.modelConfig = ModelConfig.from(configStorage);
+            this.slackWebhookUrl = configStorage.slackWebhookUrl || "";
 
             this.setupStorageListener();
 
@@ -62,6 +64,7 @@ export class ConfigManager {
 
         this.commonConfig.update(configStorage);
         this.modelConfig.update(configStorage);
+        this.slackWebhookUrl = configStorage.slackWebhookUrl || "";
     }
 
     getCommonConfig(): CommonConfig {
@@ -76,6 +79,13 @@ export class ConfigManager {
             throw new Error("ConfigManager not initialized. Call init() first.");
         }
         return this.modelConfig;
+    }
+
+    getSlackWebhookUrl(): string {
+        if (!this.initialized) {
+            throw new Error("ConfigManager not initialized. Call init() first.");
+        }
+        return this.slackWebhookUrl;
     }
 
     async updateStorage(

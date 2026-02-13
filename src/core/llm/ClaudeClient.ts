@@ -4,6 +4,8 @@ import { CommonConfig } from "../config/CommonConfig";
 import Anthropic from "@anthropic-ai/sdk";
 import { systemPrompt, persona, responseGuide } from "../constant/promptConstants";
 import { isEmpty } from "../utils/stringUtil";
+import { ConversationContext } from "../context/ContextService";
+import { buildPrompt } from "../utils/utils";
 
 export class ClaudeClient implements LlmClient {
     private client: Anthropic;
@@ -15,10 +17,10 @@ export class ClaudeClient implements LlmClient {
         this.commonConfig = commonConfig;
     }
 
-    async analyzePrompt(originalPrompt: string): Promise<Improvement> {
+    async analyzePrompt(originalPrompt: string, contexts: ConversationContext[]): Promise<Improvement> {
         try {
             const improveGuide = this.commonConfig.getImproveGuide();
-            const userPrompt = this.buildPrompt(improveGuide, originalPrompt);
+            const userPrompt = buildPrompt(improveGuide, originalPrompt, contexts);
 
             const message = await this.client.messages.create({
                 model: this.modelName,
@@ -45,13 +47,5 @@ export class ClaudeClient implements LlmClient {
         } catch (error) {
             throw new Error(`Failed to analyze prompt with Claude: ${error}`);
         }
-    }
-
-    private buildPrompt(improveGuide: string, originalPrompt: string): string {
-        return `**improveGuide:**
-${improveGuide}
-
-**originalPrompt:**
-${originalPrompt}`;
     }
 }

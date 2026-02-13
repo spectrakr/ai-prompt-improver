@@ -78,6 +78,15 @@
         </div>
 
         <div class="section">
+            <h2>Slack 연동</h2>
+            <div class="setting-group">
+                <label for="slackWebhookUrl">Slack Webhook URL</label>
+                <input type="password" id="slackWebhookUrl" placeholder="https://hooks.slack.com/services/...">
+                <div class="help-text">Gemini 응답을 Slack 채널에 공유하기 위한 Incoming Webhook URL입니다.</div>
+            </div>
+        </div>
+
+        <div class="section">
             <h2>고급 설정</h2>
 
             <div class="slider-group">
@@ -107,6 +116,17 @@
                 <input type="number" id="maxOutputTokens" min="1" max="8192" value="1024">
                 <div class="help-text">
                     생성되는 응답의 최대 길이를 토큰 단위로 제한합니다. (1 ~ 8192)
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <label for="maxTurns">컨텍스트 대화 수</label>
+                    <span class="slider-value" id="maxTurnsValue">3</span>
+                </div>
+                <input type="range" id="maxTurns" min="0" max="5" step="1" value="3">
+                <div class="help-text">
+                    프롬프트 개선 시 참고할 이전 대화 턴 수입니다. 0으로 설정하면 컨텍스트를 사용하지 않습니다. (0 ~ 5)
                 </div>
             </div>
         </div>

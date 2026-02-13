@@ -7,6 +7,8 @@ import { ImproverService } from "../improver/ImproverService";
 import { Improvement } from "../improver/Improvement";
 import { AnalysisDialog } from "./component/AnalysisDialog";
 import { LoadingWindow } from "./component/LoadingWindow";
+import { SlackService } from "../thirdparty/slack/SlackService";
+import { getAiServiceName } from "../utils/utils";
 
 export class UiManager {
     private static instance: UiManager | null = null;
@@ -14,6 +16,7 @@ export class UiManager {
     private readonly prompttierService: ImproverService;
     private readonly analysisDialog: AnalysisDialog;
     private readonly loadingWindow: LoadingWindow;
+    private readonly slackService: SlackService;
     private readonly MAX_RETRY_COUNT = 10;
     private readonly RETRY_DELAY = 500;
 
@@ -26,6 +29,7 @@ export class UiManager {
         this.prompttierService = ImproverService.getInstance();
         this.analysisDialog = AnalysisDialog.getInstance();
         this.loadingWindow = LoadingWindow.getInstance();
+        this.slackService = SlackService.getInstance();
     }
 
     static getInstance(): UiManager {
@@ -87,7 +91,7 @@ export class UiManager {
 
     private checkAndSetupInputArea(): void {
         const currentUrl = window.location.href;
-        const modelName = this.isSupportedUrl(currentUrl);
+        const modelName = getAiServiceName();
 
         if (isEmpty(modelName)) {
             this.inputArea = null;
@@ -96,14 +100,10 @@ export class UiManager {
 
         this.modelName = modelName;
         this.setInputElements();
-    }
 
-    private isSupportedUrl(url: string): ModelNameType {
-        const foundEntry = Object.entries(targetUrls).find(([modelName, urls]) =>
-            urls.some((targetUrl) => url.startsWith(targetUrl)),
-        );
-
-        return foundEntry ? (foundEntry[0] as ModelNameType) : "";
+        if (this.modelName === "gemini") {
+            this.slackService.init();
+        }
     }
 
     private setInputElements(): void {

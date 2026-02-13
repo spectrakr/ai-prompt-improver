@@ -6,19 +6,22 @@ export class CommonConfig {
     private temperature: number;
     private topP: number;
     private maxOutputTokens: number;
+    private maxTurns: number;
 
     private constructor(
         improverEnabled: boolean,
         improveGuide: string,
         temperature: number,
         topP: number,
-        maxOutputTokens: number
+        maxOutputTokens: number,
+        maxTurns: number
     ) {
         this.improverEnabled = improverEnabled;
         this.improveGuide = improveGuide;
         this.temperature = temperature;
         this.topP = topP;
         this.maxOutputTokens = maxOutputTokens;
+        this.maxTurns = maxTurns;
     }
 
     static from(storage: ConfigStorage): CommonConfig {
@@ -27,7 +30,8 @@ export class CommonConfig {
             storage.improveGuide,
             storage.commonConfig.temperature,
             storage.commonConfig.topP,
-            storage.commonConfig.maxOutputTokens
+            storage.commonConfig.maxOutputTokens,
+            storage.commonConfig.maxTurns ?? 3
         );
     }
 
@@ -37,6 +41,7 @@ export class CommonConfig {
         this.temperature = storage.commonConfig.temperature;
         this.topP = storage.commonConfig.topP;
         this.maxOutputTokens = storage.commonConfig.maxOutputTokens;
+        this.maxTurns = storage.commonConfig.maxTurns ?? 3;
     }
 
     // Getters
@@ -58,6 +63,10 @@ export class CommonConfig {
 
     getMaxOutputTokens(): number {
         return this.maxOutputTokens;
+    }
+
+    getMaxTurns(): number {
+        return this.maxTurns;
     }
 
     // Setters (optional, for manual updates)

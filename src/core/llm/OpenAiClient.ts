@@ -4,6 +4,8 @@ import { CommonConfig } from "../config/CommonConfig";
 import OpenAI from "openai";
 import { systemPrompt, persona, responseGuide } from "../constant/promptConstants";
 import { isEmpty } from "../utils/stringUtil";
+import { ConversationContext } from "../context/ContextService";
+import { buildPrompt } from "../utils/utils";
 
 export class OpenAiClient implements LlmClient {
     private client: OpenAI;
@@ -15,10 +17,10 @@ export class OpenAiClient implements LlmClient {
         this.commonConfig = commonConfig;
     }
 
-    async analyzePrompt(originalPrompt: string): Promise<Improvement> {
+    async analyzePrompt(originalPrompt: string, contexts: ConversationContext[]): Promise<Improvement> {
         try {
             const improveGuide = this.commonConfig.getImproveGuide();
-            const userPrompt = this.buildPrompt(improveGuide, originalPrompt);
+            const userPrompt = buildPrompt(improveGuide, originalPrompt, contexts);
             const completion = await this.client.chat.completions.create({
                 model: this.modelName,
                 messages: [
@@ -39,13 +41,5 @@ export class OpenAiClient implements LlmClient {
         } catch (error) {
             throw new Error(`Failed to analyze prompt with OpenAI: ${error}`);
         }
-    }
-
-    private buildPrompt(improveGuide: string, originalPrompt: string): string {
-        return `**improveGuide:**
-${improveGuide}
-
-**originalPrompt:**
-${originalPrompt}`;
     }
 }

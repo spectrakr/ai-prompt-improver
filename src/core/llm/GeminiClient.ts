@@ -2,8 +2,9 @@ import { LlmClient } from "./LlmClient";
 import { Improvement, ImprovementResult } from "../improver/Improvement";
 import { CommonConfig } from "../config/CommonConfig";
 import { GoogleGenAI } from "@google/genai";
-import { systemPrompt, persona, responseGuide } from "../constant/promptConstants";
 import { isEmpty } from "../utils/stringUtil";
+import { ConversationContext } from "../context/ContextService";
+import { buildPrompt } from "../utils/utils";
 
 export class GeminiClient implements LlmClient {
     private client: GoogleGenAI;
@@ -15,10 +16,10 @@ export class GeminiClient implements LlmClient {
         this.commonConfig = commonConfig;
     }
 
-    async analyzePrompt(originalPrompt: string): Promise<Improvement> {
+    async analyzePrompt(originalPrompt: string, contexts: ConversationContext[]): Promise<Improvement> {
         try {
             const improveGuide = this.commonConfig.getImproveGuide();
-            const prompt = this.buildPrompt(improveGuide, originalPrompt);
+            const prompt = buildPrompt(improveGuide, originalPrompt, contexts);
 
             const result = await this.client.models.generateContent({
                 model: this.modelName,
@@ -46,21 +47,5 @@ export class GeminiClient implements LlmClient {
         } catch (error) {
             throw new Error(`Failed to analyze prompt with Gemini: ${error}`);
         }
-    }
-
-    private buildPrompt(improveGuide: string, originalPrompt: string): string {
-        return `${systemPrompt}
-
-${persona}
-
-${responseGuide}
-
----
-
-**improveGuide:**
-${improveGuide}
-
-**originalPrompt:**
-${originalPrompt}`;
     }
 }

@@ -6,6 +6,7 @@ export interface ConfigStorage {
     selectedModel: ModelNameType;
     modelConfig: any;
     commonConfig: any;
+    slackWebhookUrl: string;
 }
 
 export const PROMPTTIER_DEFAULT_CONFIG: ConfigStorage = {
@@ -28,5 +29,7 @@ export const PROMPTTIER_DEFAULT_CONFIG: ConfigStorage = {
         topP: 1,
         maxOutputTokens: 4096,
         responseSchema: null,
+        maxTurns: 3,
     },
+    slackWebhookUrl: "",
 };

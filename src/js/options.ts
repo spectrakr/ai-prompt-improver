@@ -14,6 +14,9 @@ const temperatureValue = document.getElementById("temperatureValue") as HTMLSpan
 const topPInput = document.getElementById("topP") as HTMLInputElement;
 const topPValue = document.getElementById("topPValue") as HTMLSpanElement;
 const maxOutputTokensInput = document.getElementById("maxOutputTokens") as HTMLInputElement;
+const maxTurnsInput = document.getElementById("maxTurns") as HTMLInputElement;
+const maxTurnsValue = document.getElementById("maxTurnsValue") as HTMLSpanElement;
+const slackWebhookUrlInput = document.getElementById("slackWebhookUrl") as HTMLInputElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
 const resetButton = document.getElementById("reset") as HTMLButtonElement;
 const statusDiv = document.getElementById("status") as HTMLDivElement;
@@ -43,9 +46,13 @@ async function loadSettings(): Promise<void> {
         temperatureInput.value = commonConfig.getTemperature().toString();
         topPInput.value = commonConfig.getTopP().toString();
         maxOutputTokensInput.value = commonConfig.getMaxOutputTokens().toString();
+        maxTurnsInput.value = commonConfig.getMaxTurns().toString();
 
         temperatureValue.textContent = commonConfig.getTemperature().toFixed(1);
         topPValue.textContent = commonConfig.getTopP().toFixed(2);
+        maxTurnsValue.textContent = commonConfig.getMaxTurns().toString();
+
+        slackWebhookUrlInput.value = configManager.getSlackWebhookUrl();
     } catch (error) {
         console.error("설정 로드 실패:", error);
         showStatus("설정을 불러오는데 실패했습니다.", "error");
@@ -107,7 +114,9 @@ async function saveSettings(): Promise<void> {
                 temperature: parseFloat(temperatureInput.value),
                 topP: parseFloat(topPInput.value),
                 maxOutputTokens,
+                maxTurns: parseInt(maxTurnsInput.value, 10),
             },
+            slackWebhookUrl: slackWebhookUrlInput.value.trim(),
         }));
 
         // 저장 성공
@@ -209,6 +218,7 @@ function showStatus(message: string, type: "success" | "error"): void {
 function updateSliderValues(): void {
     temperatureValue.textContent = parseFloat(temperatureInput.value).toFixed(1);
     topPValue.textContent = parseFloat(topPInput.value).toFixed(2);
+    maxTurnsValue.textContent = maxTurnsInput.value;
 }
 
 // 이벤트 리스너
@@ -223,6 +233,10 @@ topPInput.addEventListener("input", () => {
     updateSliderValues();
     handleInputChange();
 });
+maxTurnsInput.addEventListener("input", () => {
+    updateSliderValues();
+    handleInputChange();
+});
 
 // 입력 필드 변경 감지
 [
@@ -233,6 +247,7 @@ topPInput.addEventListener("input", () => {
     openAiApiKeyInput,
     claudeApiKeyInput,
     maxOutputTokensInput,
+    slackWebhookUrlInput,
 ].forEach((input) => {
     input.addEventListener("input", handleInputChange);
     input.addEventListener("change", handleInputChange);
